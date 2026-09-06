@@ -1,0 +1,85 @@
+name: Publish Firefox AMO
+
+on:
+  workflow_dispatch:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    name: Package and sign for AMO
+    if: ${{ github.event_name == 'workflow_dispatch' || (github.event_name == 'release' && !github.event.release.prerelease && startsWith(github.event.release.tag_name, 'v')) }}
+    runs-on: ubuntu-latest
+    environment:
+      name: amo
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'release' && github.event.release.tag_name || github.ref }}
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install web-ext
+        run: npm install --global web-ext
+
+      - name: Check JavaScript syntax
+        run: find codex-meter-extension -maxdepth 3 -name '*.js' -print0 | xargs -0 -n1 node --check
+
+      - name: Check manifest and capture version
+        id: manifest
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: |
+          node - <<'NODE'
+          const fs = require("fs");
+          const manifest = JSON.parse(fs.readFileSync("codex-meter-extension/manifest.json", "utf8"));
+          if (!manifest.version) throw new Error("manifest.version is required");
+          const geckoId = manifest.browser_specific_settings?.gecko?.id;
+          if (!geckoId) {
+            throw new Error("browser_specific_settings.gecko.id is required to sign for AMO.");
+          }
+          const releaseTag = process.env.RELEASE_TAG || "";
+          const expectedTag = `v${manifest.version}`;
+          if (releaseTag && releaseTag !== expectedTag) {
+            throw new Error(`Release tag ${releaseTag} does not match manifest version ${expectedTag}.`);
+          }
+          console.log(`version=${manifest.version}`);
+          fs.appendFileSync(process.env.GITHUB_OUTPUT, `version=${manifest.version}\n`);
+          NODE
+
+      - name: Lint with web-ext
+        run: web-ext lint --source-dir codex-meter-extension
+
+      - name: Package extension
+        run: |
+          web-ext build --source-dir codex-meter-extension --artifacts-dir dist --overwrite-dest
+          unzip -t dist/codex_meter-*.zip
+
+      - name: Sign and submit to AMO
+        # 'listed' submits a new version for AMO review; switch to 'unlisted'
+        # for self-distributed signed XPIs.
+        env:
+          AMO_API_KEY: ${{ secrets.AMO_API_KEY }}
+          AMO_API_SECRET: ${{ secrets.AMO_API_SECRET }}
+        run: |
+          web-ext sign \
+            --source-dir codex-meter-extension \
+            --channel listed \
+            --api-key "$AMO_API_KEY" \
+            --api-secret "$AMO_API_SECRET"
+
+      - name: Upload signed package
+        uses: actions/upload-artifact@v4
+        with:
+          name: codex-meter-firefox-signed
+          path: web-ext-artifacts/*
+
+      - name: Show submitted version
+        run: echo "Submitted Codex Meter ${{ steps.manifest.outputs.version }} to AMO review."

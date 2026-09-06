@@ -11,3 +11,16 @@ store-assets/.tmp/
 # Local editor and temporary files
 *.swp
 *.tmp
+
+# Firefox tooling (web-ext) local artifacts
+.web-ext-tmp/
+.npm-cache/
+lint-result.json
+web-ext-artifacts/
+
+# Local AMO signing credentials (never commit)
+amo-credentials.ps1
+
+# web-ext signing state (created in the extension source dir)
+codex-meter-extension/.amo-upload-uuid
+codex-meter-extension/.web-extension-id
