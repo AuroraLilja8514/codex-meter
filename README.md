@@ -13,9 +13,9 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/Wangnov/codex-meter/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-2ea44f" alt="MIT license"></a>
-  <a href="https://github.com/Wangnov/codex-meter"><img src="https://img.shields.io/badge/Chrome-MV3-4285f4?logo=googlechrome&logoColor=white" alt="Chrome MV3"></a>
-  <a href="https://github.com/Wangnov/codex-meter"><img src="https://img.shields.io/badge/Firefox-MV3-ff7139?logo=firefoxbrowser&logoColor=white" alt="Firefox MV3"></a>
+  <a href="https://github.com/AuroraLilja8514/codex-meter/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-2ea44f" alt="MIT license"></a>
+  <a href="https://github.com/AuroraLilja8514/codex-meter"><img src="https://img.shields.io/badge/Chrome-MV3-4285f4?logo=googlechrome&logoColor=white" alt="Chrome MV3"></a>
+  <a href="https://github.com/AuroraLilja8514/codex-meter"><img src="https://img.shields.io/badge/Firefox-MV3-ff7139?logo=firefoxbrowser&logoColor=white" alt="Firefox MV3"></a>
   <a href="https://chatgpt.com/codex/cloud/settings/analytics"><img src="https://img.shields.io/badge/Codex-analytics-111111" alt="Codex analytics"></a>
 </p>
 
@@ -45,6 +45,10 @@
 
 它不需要额外登录，也不会保存 ChatGPT Web token。刷新数据时，它只在当前页面内读取 ChatGPT 页面已经持有的鉴权信息，并请求同一组 Codex Web analytics 接口。
 
+## 关于本项目
+
+本仓库是 [Wangnov/codex-meter](https://github.com/Wangnov/codex-meter)（作者 Jun Zhao）的 fork，在本仓库中加入了 Firefox 支持、Firefox 签名与发布流程等改动。原项目以 [MIT License](https://github.com/Wangnov/codex-meter/blob/main/LICENSE) 发布，本 fork 保留并遵循原项目的版权与许可声明，感谢原作者的工作。原项目的发布与上游开发请访问原仓库。
+
 ## 适合谁用
 
 - 你经常使用 Codex，并想更清楚地看 Credits 和 Tokens 消耗
@@ -70,7 +74,7 @@
 ## 安装
 
 ```bash
-git clone https://github.com/Wangnov/codex-meter.git
+git clone https://github.com/AuroraLilja8514/codex-meter.git
 ```
 
 然后在 Chrome 里：
@@ -159,6 +163,10 @@ unzip -t codex-meter-extension.zip
 
 It does not require another login and does not store your ChatGPT Web token. When you refresh data, it reads the authentication already available on the current ChatGPT page and calls the same Codex Web analytics endpoints.
 
+## About this project
+
+This repository is a fork of [Wangnov/codex-meter](https://github.com/Wangnov/codex-meter) (author Jun Zhao), with local additions such as Firefox support and the Firefox signing/publishing pipeline. The original project is released under the [MIT License](https://github.com/Wangnov/codex-meter/blob/main/LICENSE); this fork retains and respects the original copyright and license notice. Many thanks to the original author — for the upstream project and its development, please visit the original repository.
+
 ## Who this is for
 
 - You use Codex often and want a clearer view of Credits and token usage
@@ -184,7 +192,7 @@ It does not require another login and does not store your ChatGPT Web token. Whe
 ## Install
 
 ```bash
-git clone https://github.com/Wangnov/codex-meter.git
+git clone https://github.com/AuroraLilja8514/codex-meter.git
 ```
 
 Then in Chrome:
