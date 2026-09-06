@@ -20,6 +20,7 @@ web-ext-artifacts/
 
 # Local AMO signing credentials (never commit)
 amo-credentials.ps1
+github-credentials.ps1
 
 # web-ext signing state (created in the extension source dir)
 codex-meter-extension/.amo-upload-uuid
