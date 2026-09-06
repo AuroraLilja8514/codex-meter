@@ -20,6 +20,14 @@
 
       <section id="status" class="cqc-status" data-kind="info">读取本地状态...</section>
 
+      <section id="permissionSection" class="cqc-section" hidden>
+        <h2><span data-icon="shield"></span><span data-i18n="permission.title">站点访问权限</span></h2>
+        <p class="permission-hint" data-i18n="permission.hint">Firefox 不会自动授予站点访问权限。请为 chatgpt.com 授权，扩展才能注入 Codex analytics 页面。</p>
+        <button id="grantPermission" class="cqc-text-button cqc-primary" type="button">
+          <span data-icon="shield"></span><span data-i18n="permission.grant">授予 chatgpt.com 权限</span>
+        </button>
+      </section>
+
       <section class="cqc-section">
         <h2><span data-icon="settings"></span><span data-i18n="sections.display">页面显示</span></h2>
         <div class="setting-list">

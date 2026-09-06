@@ -36,5 +36,11 @@
       "css": ["content.css"],
       "run_at": "document_idle"
     }
-  ]
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{92aad8a8-a097-4c07-9dc1-c382b7d2516a}",
+      "strict_min_version": "121.0"
+    }
+  }
 }

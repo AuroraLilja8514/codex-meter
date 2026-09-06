@@ -213,6 +213,17 @@ button {
   line-height: 18px;
 }
 
+.permission-hint {
+  margin: 0 0 10px;
+  color: var(--cqc-text-tertiary);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+#grantPermission {
+  width: 100%;
+}
+
 .setting-card input {
   position: absolute;
   inline-size: 1px;

@@ -36,7 +36,14 @@
         count: "历史快照",
         countValue: "{count} 条",
       },
+      permission: {
+        title: "站点访问权限",
+        hint: "Firefox 不会在安装时自动授予站点访问权限。请为 chatgpt.com 授权，扩展才能注入 Codex analytics 页面并读取用量数据。",
+        grant: "授予 chatgpt.com 权限",
+      },
       status: {
+        permissionRequired: "需要先授予 chatgpt.com 站点访问权限。",
+        permissionGranted: "站点访问权限已授予。",
         loading: "读取本地状态...",
         ready: "管理设置已同步。",
         saved: "设置已同步。",
@@ -82,7 +89,14 @@
         count: "Snapshot history",
         countValue: "{count} saved",
       },
+      permission: {
+        title: "Site access",
+        hint: "Firefox does not grant site access automatically. Grant access to chatgpt.com so the extension can inject into the Codex analytics page.",
+        grant: "Grant chatgpt.com access",
+      },
       status: {
+        permissionRequired: "Grant chatgpt.com site access first.",
+        permissionGranted: "Site access granted.",
         loading: "Reading local state...",
         ready: "Controls synced.",
         saved: "Settings synced.",
@@ -147,6 +161,27 @@
       : DEFAULT_SETTINGS.defaultChartMode,
   });
 
+  const HOST_ORIGINS = ["https://chatgpt.com/*"];
+  const firefoxPermissions =
+    typeof browser !== "undefined" && browser?.permissions ? browser.permissions : null;
+
+  const hasHostPermission = async () => {
+    if (!firefoxPermissions) return true;
+    return firefoxPermissions.contains({ origins: HOST_ORIGINS });
+  };
+
+  const requestHostPermission = async () => {
+    if (!firefoxPermissions) return true;
+    return firefoxPermissions.request({ origins: HOST_ORIGINS });
+  };
+
+  const syncPermissionUi = async () => {
+    const granted = await hasHostPermission();
+    const section = $("#permissionSection");
+    if (section) section.hidden = granted;
+    return granted;
+  };
+
   const setStatus = (message, kind = "info") => {
     const el = $("#status");
     el.innerHTML = `${icon(kind === "error" ? "alert" : kind === "loading" ? "loader" : "check")}<span>${escapeHtml(message)}</span>`;
@@ -168,9 +203,14 @@
 
   const loadState = async () => {
     setStatus(t("status.loading"), "loading");
+    const granted = await syncPermissionUi();
     const [settings, data] = await Promise.all([loadSettings(), reportRepository.load()]);
     renderSettings(settings);
     renderSnapshots(data.latest, data.snapshots);
+    if (!granted) {
+      setStatus(t("status.permissionRequired"), "error");
+      return;
+    }
     setStatus(data.latest ? t("status.updated", { time: data.latest.capturedAtLocal || data.latest.capturedAt }) : t("status.noSnapshot"));
   };
 
@@ -224,6 +264,11 @@
   };
 
   const runActiveAnalysis = async ({ openPanel = false } = {}) => {
+    if (!(await hasHostPermission())) {
+      setStatus(t("status.permissionRequired"), "error");
+      return;
+    }
+
     const tab = await activeTab();
     if (!tab?.id || !isAnalyticsUrl(tab.url)) {
       setStatus(t("status.openFirst"), "error");
@@ -327,6 +372,12 @@
         setStatus(error.message || String(error), "error");
       });
     });
+  });
+
+  $("#grantPermission").addEventListener("click", () => {
+    requestHostPermission()
+      .then((granted) => (granted ? loadState() : setStatus(t("status.permissionRequired"), "error")))
+      .catch((error) => setStatus(error.message || String(error), "error"));
   });
 
   $("#openAnalytics").addEventListener("click", openAnalytics);
