@@ -19,6 +19,17 @@
   <a href="https://chatgpt.com/codex/cloud/settings/analytics"><img src="https://img.shields.io/badge/Codex-analytics-111111" alt="Codex analytics"></a>
 </p>
 
+> [!NOTE]
+> **关于本项目 / About this fork**
+>
+> 本仓库是 [Wangnov/codex-meter](https://github.com/Wangnov/codex-meter)（作者 Jun Zhao，[MIT License](https://github.com/Wangnov/codex-meter/blob/main/LICENSE)）的 fork，仅在原项目基础上加入了 **Firefox（MV3）适配**以及 Firefox 的签名与发布流程。本 fork 保留并遵循原项目的版权与许可声明，感谢原作者的工作。
+>
+> 如需 **Chrome 版本**、希望**支持原开发者**，或想关注上游的后续开发，请访问原项目：<https://github.com/Wangnov/codex-meter>。本提示以下的内容沿用自原项目的 README（含本 fork 补充的 Firefox 相关说明）。
+>
+> This repository is a fork of [Wangnov/codex-meter](https://github.com/Wangnov/codex-meter) (author Jun Zhao, [MIT License](https://github.com/Wangnov/codex-meter/blob/main/LICENSE)), adding only **Firefox (MV3) support** and the Firefox signing/publishing pipeline. The original copyright and license notice are retained with thanks to the original author.
+>
+> For the **Chrome version**, to **support the original developer**, or to follow upstream development, please visit the original project: <https://github.com/Wangnov/codex-meter>. The content below this notice is inherited from the original project's README (with Firefox-related additions from this fork).
+
 <p align="center">
   <a href="#readme-cn">中文</a> · <a href="#readme-en">English</a>
 </p>
@@ -44,10 +55,6 @@
 `Codex Meter` 是一个本地浏览器扩展（支持 Chrome 和 Firefox），用来增强 ChatGPT Codex 的分析页面。它会在 Codex analytics 页面里的「使用详情」旁边加入入口按钮和图表控制器，并用贴近 Codex 官方界面的页面内弹窗展示本周期 Credits、Tokens、缓存命中率、推算周额度、折算金额和每日明细。浏览器扩展弹窗只作为管理面板，用来控制页面内按钮、图表入口、默认图表模式和本地快照。
 
 它不需要额外登录，也不会保存 ChatGPT Web token。刷新数据时，它只在当前页面内读取 ChatGPT 页面已经持有的鉴权信息，并请求同一组 Codex Web analytics 接口。
-
-## 关于本项目
-
-本仓库是 [Wangnov/codex-meter](https://github.com/Wangnov/codex-meter)（作者 Jun Zhao）的 fork，在本仓库中加入了 Firefox 支持、Firefox 签名与发布流程等改动。原项目以 [MIT License](https://github.com/Wangnov/codex-meter/blob/main/LICENSE) 发布，本 fork 保留并遵循原项目的版权与许可声明，感谢原作者的工作。原项目的发布与上游开发请访问原仓库。
 
 ## 适合谁用
 
@@ -162,10 +169,6 @@ unzip -t codex-meter-extension.zip
 `Codex Meter` is a local browser extension (Chrome and Firefox) for the ChatGPT Codex analytics page. It adds an entry button and chart controls beside the usage details section, plus a Codex-native-feeling in-page modal for cycle Credits, Tokens, cache hit rate, projected weekly Credits, estimated value, and daily usage rows. The browser extension popup is a control panel for the in-page button, chart controls, default chart mode, and local snapshots.
 
 It does not require another login and does not store your ChatGPT Web token. When you refresh data, it reads the authentication already available on the current ChatGPT page and calls the same Codex Web analytics endpoints.
-
-## About this project
-
-This repository is a fork of [Wangnov/codex-meter](https://github.com/Wangnov/codex-meter) (author Jun Zhao), with local additions such as Firefox support and the Firefox signing/publishing pipeline. The original project is released under the [MIT License](https://github.com/Wangnov/codex-meter/blob/main/LICENSE); this fork retains and respects the original copyright and license notice. Many thanks to the original author — for the upstream project and its development, please visit the original repository.
 
 ## Who this is for
 
