@@ -15,6 +15,7 @@
 <p align="center">
   <a href="https://github.com/Wangnov/codex-meter/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-2ea44f" alt="MIT license"></a>
   <a href="https://github.com/Wangnov/codex-meter"><img src="https://img.shields.io/badge/Chrome-MV3-4285f4?logo=googlechrome&logoColor=white" alt="Chrome MV3"></a>
+  <a href="https://github.com/Wangnov/codex-meter"><img src="https://img.shields.io/badge/Firefox-MV3-ff7139?logo=firefoxbrowser&logoColor=white" alt="Firefox MV3"></a>
   <a href="https://chatgpt.com/codex/cloud/settings/analytics"><img src="https://img.shields.io/badge/Codex-analytics-111111" alt="Codex analytics"></a>
 </p>
 
@@ -40,7 +41,7 @@
 
 # 中文
 
-`Codex Meter` 是一个本地 Chrome 扩展，用来增强 ChatGPT Codex 的分析页面。它会在 Codex analytics 页面里的「使用详情」旁边加入入口按钮和图表控制器，并用贴近 Codex 官方界面的页面内弹窗展示本周期 Credits、Tokens、缓存命中率、推算周额度、折算金额和每日明细。浏览器扩展弹窗只作为管理面板，用来控制页面内按钮、图表入口、默认图表模式和本地快照。
+`Codex Meter` 是一个本地浏览器扩展（支持 Chrome 和 Firefox），用来增强 ChatGPT Codex 的分析页面。它会在 Codex analytics 页面里的「使用详情」旁边加入入口按钮和图表控制器，并用贴近 Codex 官方界面的页面内弹窗展示本周期 Credits、Tokens、缓存命中率、推算周额度、折算金额和每日明细。浏览器扩展弹窗只作为管理面板，用来控制页面内按钮、图表入口、默认图表模式和本地快照。
 
 它不需要额外登录，也不会保存 ChatGPT Web token。刷新数据时，它只在当前页面内读取 ChatGPT 页面已经持有的鉴权信息，并请求同一组 Codex Web analytics 接口。
 
@@ -63,7 +64,7 @@
 - 统计本周期 Credits、总 Tokens、输入 Tokens、缓存命中率、推算周额度和折算金额
 - 展示本周期每日明细和周期外历史明细
 - 支持 JSON / CSV 导出
-- 用 `chrome.storage.local` 保存紧凑的本地快照
+- 用扩展的 `storage.local`（Chrome 与 Firefox 通用）保存紧凑的本地快照
 - 使用本地内联 SVG 图标，不加载远程脚本
 
 ## 安装
@@ -83,6 +84,28 @@ git clone https://github.com/Wangnov/codex-meter.git
 codex-meter/codex-meter-extension
 ```
 
+### Firefox
+
+Firefox 需要 121 及以上版本（Manifest V3 与本项目用到的 CSS 特性）：
+
+1. 打开 `about:debugging#/runtime/this-firefox`
+2. 点击 `Load Temporary Add-on…`
+3. 选择扩展目录里的 `manifest.json`：
+
+```text
+codex-meter/codex-meter-extension/manifest.json
+```
+
+4. 点击工具栏中的 Codex Meter 图标，在弹窗里点击「授予 chatgpt.com 权限」——Firefox 不会在安装时自动授予站点访问权限，授权后扩展才能注入 analytics 页面
+
+临时加载的扩展会在 Firefox 重启后消失。想永久安装，需要用 `web-ext sign` 签名，或提交到 [addons.mozilla.org](https://addons.mozilla.org/) 审核：
+
+```bash
+npx web-ext build --source-dir codex-meter-extension
+npx web-ext sign --source-dir codex-meter-extension --channel unlisted \
+  --api-key "$AMO_API_KEY" --api-secret "$AMO_API_SECRET"
+```
+
 ## 使用
 
 1. 打开 <https://chatgpt.com/codex/cloud/settings/analytics>
@@ -92,7 +115,7 @@ codex-meter/codex-meter-extension
 ## 隐私和限制
 
 - 扩展不会保存 ChatGPT Web bearer token
-- 用量快照只保存在本机 Chrome 的 `storage.local`
+- 用量快照只保存在本机浏览器的 `storage.local`
 - 这个项目依赖 ChatGPT Web 的私有 `wham` analytics 接口；如果 OpenAI 调整页面结构或接口字段，扩展可能需要适配
 - 本项目不是 OpenAI 官方项目，也不与 OpenAI 存在隶属关系
 
@@ -107,6 +130,10 @@ find codex-meter-extension -name '*.js' -maxdepth 3 -print0 | xargs -0 -n1 node 
 # manifest 检查
 node -e "JSON.parse(require('fs').readFileSync('codex-meter-extension/manifest.json','utf8'))"
 
+# Firefox 专项检查与打包（web-ext）
+npx web-ext lint --source-dir codex-meter-extension
+npx web-ext build --source-dir codex-meter-extension
+
 # 本地打包
 rm -f codex-meter-extension.zip
 (cd codex-meter-extension && zip -r ../codex-meter-extension.zip .)
@@ -118,6 +145,8 @@ unzip -t codex-meter-extension.zip
 - 手动触发 `Publish Chrome Web Store`
 - 发布非 prerelease 的 `v*` GitHub Release
 
+也可以在本地用 `sign-firefox.ps1` 签名（凭据设置见脚本注释：`AMO_API_KEY` 填 JWT 签发者，`AMO_API_SECRET` 填 JWT 私钥）。发布到 Firefox AMO 的工作流（`Publish Firefox AMO`）触发方式相同，用 `web-ext sign` 签名并提交审核，需要在 `amo` environment 中配置 `AMO_API_KEY` / `AMO_API_SECRET`（在 [addons.mozilla.org](https://addons.mozilla.org/developers/) 的开发者后台生成 API 凭据）。
+
 自动发布会校验 release tag 是否匹配 `manifest.json` 版本号，并在上传前检查商店中没有待审核版本。
 
 ---
@@ -126,7 +155,7 @@ unzip -t codex-meter-extension.zip
 
 # English
 
-`Codex Meter` is a local Chrome extension for the ChatGPT Codex analytics page. It adds an entry button and chart controls beside the usage details section, plus a Codex-native-feeling in-page modal for cycle Credits, Tokens, cache hit rate, projected weekly Credits, estimated value, and daily usage rows. The browser extension popup is a control panel for the in-page button, chart controls, default chart mode, and local snapshots.
+`Codex Meter` is a local browser extension (Chrome and Firefox) for the ChatGPT Codex analytics page. It adds an entry button and chart controls beside the usage details section, plus a Codex-native-feeling in-page modal for cycle Credits, Tokens, cache hit rate, projected weekly Credits, estimated value, and daily usage rows. The browser extension popup is a control panel for the in-page button, chart controls, default chart mode, and local snapshots.
 
 It does not require another login and does not store your ChatGPT Web token. When you refresh data, it reads the authentication already available on the current ChatGPT page and calls the same Codex Web analytics endpoints.
 
@@ -149,7 +178,7 @@ It does not require another login and does not store your ChatGPT Web token. Whe
 - Shows cycle Credits, total Tokens, input Tokens, cache hit rate, projected weekly Credits, and estimated USD value
 - Shows current-cycle daily rows and out-of-cycle history rows
 - Exports JSON and CSV
-- Stores compact local snapshots in `chrome.storage.local`
+- Stores compact local snapshots in the extension `storage.local` (works on both Chrome and Firefox)
 - Uses local inline SVG icons; no remote icon script is loaded
 
 ## Install
@@ -169,6 +198,28 @@ Then in Chrome:
 codex-meter/codex-meter-extension
 ```
 
+### Firefox
+
+Firefox 121 or newer is required (Manifest V3 plus the CSS features this project uses):
+
+1. Open `about:debugging#/runtime/this-firefox`
+2. Click `Load Temporary Add-on…`
+3. Pick `manifest.json` inside the extension folder:
+
+```text
+codex-meter/codex-meter-extension/manifest.json
+```
+
+4. Click the Codex Meter toolbar icon and use `Grant chatgpt.com access` in the popup — Firefox does not grant site access automatically, and the extension can only inject into the analytics page after access is granted
+
+Temporary add-ons disappear when Firefox restarts. For a permanent install, sign with `web-ext sign` or submit to [addons.mozilla.org](https://addons.mozilla.org/):
+
+```bash
+npx web-ext build --source-dir codex-meter-extension
+npx web-ext sign --source-dir codex-meter-extension --channel unlisted \
+  --api-key "$AMO_API_KEY" --api-secret "$AMO_API_SECRET"
+```
+
 ## Use
 
 1. Open <https://chatgpt.com/codex/cloud/settings/analytics>
@@ -178,7 +229,7 @@ codex-meter/codex-meter-extension
 ## Privacy and Limits
 
 - The extension does not store the ChatGPT Web bearer token
-- Usage snapshots stay in local Chrome `storage.local`
+- Usage snapshots stay in the local browser `storage.local`
 - This depends on private ChatGPT Web `wham` analytics endpoints; if OpenAI changes the page or fields, the extension may need adjustments
 - This project is not an official OpenAI project and is not affiliated with OpenAI
 
@@ -193,6 +244,10 @@ find codex-meter-extension -name '*.js' -maxdepth 3 -print0 | xargs -0 -n1 node 
 # manifest check
 node -e "JSON.parse(require('fs').readFileSync('codex-meter-extension/manifest.json','utf8'))"
 
+# Firefox checks and package (web-ext)
+npx web-ext lint --source-dir codex-meter-extension
+npx web-ext build --source-dir codex-meter-extension
+
 # local package
 rm -f codex-meter-extension.zip
 (cd codex-meter-extension && zip -r ../codex-meter-extension.zip .)
@@ -203,5 +258,7 @@ The Chrome Web Store GitHub Actions workflow runs in two cases:
 
 - Manual `Publish Chrome Web Store` dispatch
 - Published non-prerelease `v*` GitHub Releases
+
+You can also sign locally with `sign-firefox.ps1` (credential setup in the script comments: `AMO_API_KEY` is the JWT issuer, `AMO_API_SECRET` is the JWT secret). The Firefox AMO workflow (`Publish Firefox AMO`) triggers the same way, signs with `web-ext sign` and submits for review. It needs `AMO_API_KEY` / `AMO_API_SECRET` configured in the `amo` environment (generate API credentials from the [addons.mozilla.org](https://addons.mozilla.org/developers/) developer hub).
 
 The release-triggered publish checks that the release tag matches the `manifest.json` version and that there is no pending Chrome Web Store submission before uploading.

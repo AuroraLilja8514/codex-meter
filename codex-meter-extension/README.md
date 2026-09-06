@@ -1,6 +1,6 @@
 # Codex Meter
 
-Local Chrome extension for the ChatGPT Codex analytics page.
+Local browser extension (Chrome and Firefox) for the ChatGPT Codex analytics page.
 
 ## What It Does
 
@@ -20,6 +20,8 @@ The extension does not store the ChatGPT Web bearer token. It extracts the token
 
 ## Install
 
+Chrome:
+
 1. Open `chrome://extensions`.
 2. Enable `Developer mode`.
 3. Click `Load unpacked`.
@@ -28,6 +30,15 @@ The extension does not store the ChatGPT Web bearer token. It extracts the token
 ```text
 codex-meter/codex-meter-extension
 ```
+
+Firefox (121+):
+
+1. Open `about:debugging#/runtime/this-firefox`.
+2. Click `Load Temporary Add-on…`.
+3. Pick `manifest.json` in the extension folder.
+4. Click the Codex Meter toolbar icon and use `Grant chatgpt.com access` in the popup. Firefox does not grant site access automatically, so the content script only runs after access is granted. The same toggle also lives under `about:addons` → Codex Meter → Permissions.
+
+Temporary add-ons disappear when Firefox restarts. For a permanent install, sign with `web-ext sign` or submit to addons.mozilla.org.
 
 ## Use
 
@@ -42,3 +53,4 @@ codex-meter/codex-meter-extension
 - This depends on private ChatGPT Web endpoints and may need updates if OpenAI changes the page internals.
 - This is intentionally local-only. Keep it unpacked unless you want to maintain extension packaging and review.
 - The button uses page structure first, then localized text, then a fixed-position fallback. If it still does not appear, refresh the analytics tab after loading the extension.
+- On Firefox, site access is never granted at install time. Grant `chatgpt.com` access from the extension popup (or `about:addons`) before using the extension.
