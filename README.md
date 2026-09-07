@@ -1,3 +1,14 @@
+> [!NOTE]
+> **关于本项目 / About this fork**
+>
+> 本仓库是 [Wangnov/codex-meter](https://github.com/Wangnov/codex-meter)（作者 Jun Zhao，[MIT License](https://github.com/Wangnov/codex-meter/blob/main/LICENSE)）的 fork，仅在原项目基础上加入了 **Firefox（MV3）适配**以及 Firefox 的签名与发布流程。本 fork 保留并遵循原项目的版权与许可声明，感谢原作者的工作。
+>
+> 如需 **Chrome 版本**、希望**支持原开发者**，或想关注上游的后续开发，请访问原项目：<https://github.com/Wangnov/codex-meter>。本提示以下的内容沿用自原项目的 README（含本 fork 补充的 Firefox 相关说明）。
+>
+> This repository is a fork of [Wangnov/codex-meter](https://github.com/Wangnov/codex-meter) (author Jun Zhao, [MIT License](https://github.com/Wangnov/codex-meter/blob/main/LICENSE)), adding only **Firefox (MV3) support** and the Firefox signing/publishing pipeline. The original copyright and license notice are retained with thanks to the original author.
+>
+> For the **Chrome version**, to **support the original developer**, or to follow upstream development, please visit the original project: <https://github.com/Wangnov/codex-meter>. The content below this notice is inherited from the original project's README (with Firefox-related additions from this fork).
+
 <p align="center">
   <img src="./store-assets/images/marquee-promo-1400x560.jpg" alt="Codex Meter">
 </p>
@@ -18,17 +29,6 @@
   <a href="https://github.com/AuroraLilja8514/codex-meter"><img src="https://img.shields.io/badge/Firefox-MV3-ff7139?logo=firefoxbrowser&logoColor=white" alt="Firefox MV3"></a>
   <a href="https://chatgpt.com/codex/cloud/settings/analytics"><img src="https://img.shields.io/badge/Codex-analytics-111111" alt="Codex analytics"></a>
 </p>
-
-> [!NOTE]
-> **关于本项目 / About this fork**
->
-> 本仓库是 [Wangnov/codex-meter](https://github.com/Wangnov/codex-meter)（作者 Jun Zhao，[MIT License](https://github.com/Wangnov/codex-meter/blob/main/LICENSE)）的 fork，仅在原项目基础上加入了 **Firefox（MV3）适配**以及 Firefox 的签名与发布流程。本 fork 保留并遵循原项目的版权与许可声明，感谢原作者的工作。
->
-> 如需 **Chrome 版本**、希望**支持原开发者**，或想关注上游的后续开发，请访问原项目：<https://github.com/Wangnov/codex-meter>。本提示以下的内容沿用自原项目的 README（含本 fork 补充的 Firefox 相关说明）。
->
-> This repository is a fork of [Wangnov/codex-meter](https://github.com/Wangnov/codex-meter) (author Jun Zhao, [MIT License](https://github.com/Wangnov/codex-meter/blob/main/LICENSE)), adding only **Firefox (MV3) support** and the Firefox signing/publishing pipeline. The original copyright and license notice are retained with thanks to the original author.
->
-> For the **Chrome version**, to **support the original developer**, or to follow upstream development, please visit the original project: <https://github.com/Wangnov/codex-meter>. The content below this notice is inherited from the original project's README (with Firefox-related additions from this fork).
 
 <p align="center">
   <a href="#readme-cn">中文</a> · <a href="#readme-en">English</a>
